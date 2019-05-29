@@ -7,11 +7,26 @@ class CryptosController < ApplicationController
   # GET /cryptos.json
   def index
     @cryptos = Crypto.all
+     require 'net/http'
+    require 'json'
+    @url = 'https://api.coinmarketcap.com/v1/ticker/'
+    @uri =URI(@url)
+    @response = Net::HTTP.get(@uri)
+    @lookup_crypto = JSON.parse(@response)
+   @profit_loss = 0
   end
 
   # GET /cryptos/1
   # GET /cryptos/1.json
   def show
+    @cryptos = Crypto.all
+     require 'net/http'
+    require 'json'
+    @url = 'https://api.coinmarketcap.com/v1/ticker/'
+    @uri =URI(@url)
+    @response = Net::HTTP.get(@uri)
+    @show_crypto = JSON.parse(@response)
+   
   end
 
   # GET /cryptos/new
@@ -52,7 +67,8 @@ class CryptosController < ApplicationController
       end
     end
   end
-
+  
+  
   # DELETE /cryptos/1
   # DELETE /cryptos/1.json
   def destroy
@@ -75,13 +91,12 @@ class CryptosController < ApplicationController
     end
     
     def correct_user
-      
       @correct = current_user.crypto.find_by(id: params[:id])
-      redirect_to cryptos_path, notice: " Hey !!! Not Authorized to edit this entry"
+      redirect_to cryptos_path, notice: " Hey !!! Not Authorized to edit this entry"  if @correct.nil?
       
     end
-    
-    
-    
+
+
+  
     
 end
