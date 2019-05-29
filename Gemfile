@@ -42,6 +42,3 @@ group :production do
   gem 'rails_12factor', '~> 0.0.3'
 end
 
-
-
-gem 'spree', '1.0.3'
